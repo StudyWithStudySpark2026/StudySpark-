@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Security baseline for the static prototype. Keep this in place when deploying.
+     For production, set these as HTTP response headers at the hosting layer too. -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="description" content="StudySpark — small tools for smarter studying.">
+<title>StudySpark — Small tools. Smarter studying.</title>
+
+<style>
+:root{--accent:#6c5ce7;--ink:#172033;--muted:#687386;--bg:#f7f8fc;--card:#fff;--line:#e8eaf1;--success:#198754}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+a{text-decoration:none;color:inherit} button,input{font:inherit}
+.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.35rem;font-weight:800;letter-spacing:-.04em}.logo span{color:var(--accent)}
+.links{display:flex;gap:22px;color:var(--muted);font-size:.95rem}.links a:hover{color:var(--accent)}
+.hero{max-width:1100px;margin:auto;padding:76px 20px 54px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center}
+.badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:#eeecff;color:var(--accent);font-weight:700;font-size:.82rem}
+h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.98;letter-spacing:-.065em;margin:18px 0}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:570px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:750;cursor:pointer;display:inline-block}
+.primary{background:var(--accent);color:white}.secondary{background:white;border:1px solid var(--line)}.primary:hover{filter:brightness(.96)}
+.hero-card,.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 20px 60px rgba(32,32,70,.07)}
+.hero-card{border-radius:28px}.mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
+.tool-preview,.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.preview,.card{padding:17px;border:1px solid var(--line);border-radius:17px;background:#fff}
+.preview b{display:block;margin-top:7px}
+section{max-width:1100px;margin:auto;padding:55px 20px}.section-title{text-align:center;margin-bottom:28px}
+.section-title h2{font-size:2rem;letter-spacing:-.04em;margin:0 0 7px}.section-title p{color:var(--muted);margin:0}
+.grid{grid-template-columns:repeat(4,1fr);gap:15px}.card h3{margin:9px 0 5px;font-size:1.03rem}.card p{margin:0;color:var(--muted);font-size:.9rem}
+.icon{font-size:1.5rem}.tool{cursor:pointer;transition:transform .15s,box-shadow .15s}.tool:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(32,32,70,.08)}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:20px}label{display:block;font-size:.88rem;font-weight:700;margin:0 0 7px}
+input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;outline:none;margin-bottom:14px;background:#fff}
+input:focus{border-color:var(--accent)}.result{margin-top:10px;padding:17px;border-radius:14px;background:#f3f1ff;color:var(--accent);font-weight:800;font-size:1.2rem}
+.timer{text-align:center}.time{font-size:3.4rem;font-weight:800;letter-spacing:-.05em;margin:15px 0}.timer .actions{justify-content:center}
+.security-note{background:#f3fff7;border:1px solid #cdebd9;border-radius:16px;padding:17px;margin-top:15px;color:#235c3a}
+footer{border-top:1px solid var(--line);padding:28px 20px;text-align:center;color:var(--muted);font-size:.9rem}
+@media(max-width:800px){.links{display:none}.hero{grid-template-columns:1fr;padding-top:50px}.grid{grid-template-columns:1fr 1fr}.calculator{grid-template-columns:1fr}}
+@media(max-width:480px){.grid,.tool-preview{grid-template-columns:1fr}h1{font-size:3.1rem}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#">Study<span>Spark</span></a>
+    <div class="links"><a href="#tools">Tools</a><a href="#resources">Resources</a><a href="#security">Security</a></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="badge">Built for students everywhere 🌍</span>
+    <h1>Make studying a little easier.</h1>
+    <p>Free tools and resources designed to help students study, plan and stay organized.</p>
+    <div class="actions"><a class="btn primary" href="#tools">Explore tools</a><a class="btn secondary" href="#resources">Study resources</a></div>
+  </div>
+  <div class="hero-card">
+    <div class="mini-head"><strong>Study dashboard</strong><span class="dot"></span></div>
+    <div class="tool-preview">
+      <div class="preview">🧮<b>Grade Calculator</b><small>Check your result</small></div>
+      <div class="preview">⏱️<b>Study Timer</b><small>Focus for a session</small></div>
+      <div class="preview">📅<b>Exam Countdown</b><small>Track your deadline</small></div>
+      <div class="preview">📊<b>Percentage</b><small>Calculate instantly</small></div>
+    </div>
+  </div>
+</header>
+
+<section id="tools">
+  <div class="section-title"><h2>Study tools</h2><p>Useful little tools, right in your browser.</p></div>
+  <div class="grid">
+    <a class="card tool" href="#calculator"><div class="icon">🧮</div><h3>Grade Calculator</h3><p>Calculate your average from marks.</p></a>
+    <a class="card tool" href="#calculator"><div class="icon">📊</div><h3>Percentage Calculator</h3><p>Find percentages quickly.</p></a>
+    <a class="card tool" href="#timer"><div class="icon">⏱️</div><h3>Study Timer</h3><p>Use focused study sessions.</p></a>
+    <a class="card tool" href="#countdown"><div class="icon">📅</div><h3>Exam Countdown</h3><p>See how long until an exam.</p></a>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="section-title"><h2>Calculators</h2><p>Your entries stay in your browser in this version.</p></div>
+  <div class="calculator">
+    <div class="panel">
+      <h3>Grade average</h3>
+      <label for="marks">Marks, separated by commas</label>
+      <input id="marks" inputmode="decimal" maxlength="300" autocomplete="off" placeholder="e.g. 72, 65, 81, 90">
+      <button class="btn primary" type="button" id="averageBtn">Calculate</button>
+      <div id="avgResult" class="result" aria-live="polite">Your average will appear here.</div>
+    </div>
+    <div class="panel">
+      <h3>Percentage</h3>
+      <label for="part">Your score</label>
+      <input id="part" type="number" inputmode="decimal" min="0" max="1000000000" step="any" autocomplete="off" placeholder="e.g. 42">
+      <label for="whole">Total possible</label>
+      <input id="whole" type="number" inputmode="decimal" min="0.000001" max="1000000000" step="any" autocomplete="off" placeholder="e.g. 60">
+      <button class="btn primary" type="button" id="percentBtn">Calculate</button>
+      <div id="percentResult" class="result" aria-live="polite">Your percentage will appear here.</div>
+    </div>
+  </div>
+</section>
+
+<section id="timer">
+  <div class="section-title"><h2>Study timer</h2><p>A simple 25-minute focus session.</p></div>
+  <div class="panel timer">
+    <div id="time" class="time" aria-live="polite">25:00</div>
+    <div class="actions">
+      <button class="btn primary" type="button" id="startBtn">Start</button>
+      <button class="btn secondary" type="button" id="pauseBtn">Pause</button>
+      <button class="btn secondary" type="button" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</section>
+
+<section id="countdown">
+  <div class="section-title"><h2>Exam countdown</h2><p>Choose a date and we'll count the days for you.</p></div>
+  <div class="panel">
+    <label for="examDate">Exam date</label>
+    <input id="examDate" type="date">
+    <button class="btn primary" type="button" id="countBtn">Check countdown</button>
+    <div id="countResult" class="result" aria-live="polite">Choose a date to begin.</div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="section-title"><h2>Study resources</h2><p>We're building this section next.</p></div>
+  <div class="grid">
+    <div class="card"><div class="icon">📐</div><h3>Mathematics</h3><p>Revision guides and practice resources.</p></div>
+    <div class="card"><div class="icon">🧬</div><h3>Biology</h3><p>Simple explanations and revision help.</p></div>
+    <div class="card"><div class="icon">⚗️</div><h3>Chemistry</h3><p>Key concepts and practice material.</p></div>
+    <div class="card"><div class="icon">📖</div><h3>Study Skills</h3><p>Tips for planning and revision.</p></div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="section-title"><h2>Security by design 🔐</h2><p>We're starting with a deliberately simple architecture.</p></div>
+  <div class="panel">
+    <div class="security-note"><strong>Privacy-first prototype:</strong> this version does not collect accounts, passwords, payment details, or personal information. Calculator inputs are processed locally in the browser and are not sent to a server.</div>
+    <p><strong>What we've done:</strong> strict content-security policy, no third-party JavaScript, safe DOM text updates instead of injecting HTML, input limits and numeric validation, no storage of sensitive data, and a design that can later be moved behind HTTPS.</p>
+    <p><strong>Before payments or accounts:</strong> we'll add server-side validation, secure authentication, CSRF protection, rate limiting, secure cookies, database access controls, payment-provider checkout, audit logs, backups, and production security headers at the hosting layer.</p>
+    <p><strong>Important:</strong> the security protections in this prototype are a starting point, not a guarantee that a future production system is secure. We should do a security review before accepting real money or sensitive user data.</p>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-title"><h2>About StudySpark</h2><p>Small tools. Smarter studying.</p></div>
+  <div class="panel" style="max-width:760px;margin:auto;text-align:center">
+    <p>StudySpark is a student-first project designed to make everyday studying simpler. We start with free tools and useful resources, then grow based on what students actually need.</p>
+  </div>
+</section>
+
+<footer>© 2026 StudySpark · Small tools. Smarter studying.</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>
