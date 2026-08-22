@@ -5,215 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StudySpark — Small tools. Smarter studying.</title>
 <style>
-:root{
-  --accent:#6c5ce7;
-  --accent2:#8e7cff;
-  --ink:#172033;
-  --muted:#687386;
-  --bg:#f7f8fc;
-  --card:#fff;
-  --line:#e8eaf1;
-  --success:#198754;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
-a{text-decoration:none;color:inherit}
-button,input{font:inherit}
-.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:1.35rem;font-weight:800;letter-spacing:-.04em}
-.logo span{color:var(--accent)}
-.links{display:flex;gap:22px;color:var(--muted);font-size:.95rem}
-.links a:hover{color:var(--accent)}
-.hero{max-width:1100px;margin:auto;padding:76px 20px 54px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center}
-.badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:#eeecff;color:var(--accent);font-weight:700;font-size:.82rem}
-h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.98;letter-spacing:-.065em;margin:18px 0}
-.hero p{font-size:1.1rem;color:var(--muted);max-width:570px}
-.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:750;cursor:pointer;display:inline-block}
-.primary{background:var(--accent);color:white}
-.secondary{background:white;border:1px solid var(--line)}
-.primary:hover{filter:brightness(.96)}
-.hero-card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 20px 60px rgba(32,32,70,.09)}
-.mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--success)}
-.tool-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.preview{padding:17px;border:1px solid var(--line);border-radius:17px}
-.preview b{display:block;margin-top:7px}
-section{max-width:1100px;margin:auto;padding:55px 20px}
-.section-title{text-align:center;margin-bottom:28px}
-.section-title h2{font-size:2rem;letter-spacing:-.04em;margin:0 0 7px}
-.section-title p{color:var(--muted);margin:0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.card{background:white;border:1px solid var(--line);border-radius:19px;padding:20px}
-.card h3{margin:9px 0 5px;font-size:1.03rem}
-.card p{margin:0;color:var(--muted);font-size:.9rem}
-.icon{font-size:1.5rem}
-.tool{cursor:pointer;transition:transform .15s,box-shadow .15s}
-.tool:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(32,32,70,.08)}
-.calculator{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-.panel{background:white;border:1px solid var(--line);border-radius:22px;padding:24px}
-label{display:block;font-size:.88rem;font-weight:700;margin:0 0 7px}
-input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;outline:none;margin-bottom:14px}
-input:focus{border-color:var(--accent)}
-.result{margin-top:10px;padding:17px;border-radius:14px;background:#f3f1ff;color:var(--accent);font-weight:800;font-size:1.2rem}
-.timer{text-align:center}
-.time{font-size:3.4rem;font-weight:800;letter-spacing:-.05em;margin:15px 0}
-.timer .actions{justify-content:center}
+:root{--accent:#6c5ce7;--accent2:#8e7cff;--ink:#172033;--muted:#687386;--bg:#f7f8fc;--card:#fff;--line:#e8eaf1;--success:#198754;--soft:#f0eeff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}.logo{font-size:1.35rem;font-weight:800;letter-spacing:-.04em}.logo span{color:var(--accent)}.links{display:flex;gap:20px;color:var(--muted);font-size:.92rem;flex-wrap:wrap}.links a:hover{color:var(--accent)}
+.hero{max-width:1100px;margin:auto;padding:76px 20px 54px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center}.badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:#eeecff;color:var(--accent);font-weight:700;font-size:.82rem}h1{font-size:clamp(2.6rem,7vw,5rem);line-height:.98;letter-spacing:-.065em;margin:18px 0}.hero p{font-size:1.1rem;color:var(--muted);max-width:570px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:750;display:inline-block}.primary{background:var(--accent);color:white}.secondary{background:white;border:1px solid var(--line)}.primary:hover{filter:brightness(.96)}
+.hero-card,.panel,.card{background:var(--card);border:1px solid var(--line);border-radius:22px}.hero-card{padding:24px;box-shadow:0 20px 60px rgba(32,32,70,.09)}.mini-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.dot{width:10px;height:10px;border-radius:50%;background:var(--success)}.tool-preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}.preview{padding:17px;border:1px solid var(--line);border-radius:17px}.preview b{display:block;margin-top:7px}
+section{max-width:1100px;margin:auto;padding:55px 20px}.section-title{text-align:center;margin-bottom:28px}.section-title h2{font-size:2rem;letter-spacing:-.04em;margin:0 0 7px}.section-title p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{padding:20px}.card h3{margin:9px 0 5px;font-size:1.03rem}.card p{margin:0;color:var(--muted);font-size:.9rem}.icon{font-size:1.5rem}.tool{transition:transform .15s,box-shadow .15s}.tool:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(32,32,70,.08)}
+.calculator{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{padding:24px}label{display:block;font-size:.88rem;font-weight:700;margin:0 0 7px}input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;outline:none;margin-bottom:14px;background:white;color:var(--ink)}textarea{min-height:140px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--accent)}.result{margin-top:10px;padding:17px;border-radius:14px;background:var(--soft);color:var(--accent);font-weight:800;font-size:1.08rem}.timer{text-align:center}.time{font-size:3.4rem;font-weight:800;letter-spacing:-.05em;margin:15px 0}.timer .actions{justify-content:center}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.muted{color:var(--muted)}.small{font-size:.88rem}.list{margin:0;padding-left:20px}.goal-row{display:flex;gap:10px;align-items:center}.goal-row input{margin:0}.progress{height:10px;background:#ececf3;border-radius:99px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}.stat{font-size:1.7rem;font-weight:800}.danger{color:#b42318}.success{color:var(--success)}.resource{min-height:150px}.empty{color:var(--muted);text-align:center;padding:18px}
 footer{border-top:1px solid var(--line);padding:28px 20px;text-align:center;color:var(--muted);font-size:.9rem}
-@media(max-width:800px){
-  .links{display:none}
-  .hero{grid-template-columns:1fr;padding-top:50px}
-  .grid{grid-template-columns:1fr 1fr}
-  .calculator{grid-template-columns:1fr}
-}
-@media(max-width:480px){
-  .grid,.tool-preview{grid-template-columns:1fr}
-  h1{font-size:3.1rem}
-}
+@media(max-width:850px){.links{display:none}.hero{grid-template-columns:1fr;padding-top:50px}.grid{grid-template-columns:1fr 1fr}.calculator,.two-col{grid-template-columns:1fr}.three-col{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.grid,.tool-preview,.three-col{grid-template-columns:1fr}h1{font-size:3.1rem}.nav-inner{padding:13px 15px}section{padding:42px 15px}.hero{padding-left:15px;padding-right:15px}.panel{padding:19px}}
 </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="logo" href="#">Study<span>Spark</span></a>
-    <div class="links">
-      <a href="#tools">Tools</a>
-      <a href="#resources">Resources</a>
-      <a href="#about">About</a>
-    </div>
-  </div>
-</nav>
+<nav class="nav"><div class="nav-inner"><a class="logo" href="#top">Study<span>Spark</span></a><div class="links"><a href="#tools">Tools</a><a href="#planner">Planner</a><a href="#goals">Goals</a><a href="#resources">Resources</a><a href="#about">About</a></div></div></nav>
+<header class="hero" id="top"><div><span class="badge">Built for students everywhere 🌍</span><h1>Make studying a little easier.</h1><p>Free tools and resources designed to help students study, plan and stay organized.</p><div class="actions"><a class="btn primary" href="#tools">Explore tools</a><a class="btn secondary" href="#resources">Study resources</a></div></div><div class="hero-card"><div class="mini-head"><strong>Study dashboard</strong><span class="dot"></span></div><div class="tool-preview"><div class="preview">🧮<b>Grade Calculator</b><small>Check your result</small></div><div class="preview">⏱️<b>Study Timer</b><small>Focus for a session</small></div><div class="preview">📅<b>Exam Countdown</b><small>Track your deadline</small></div><div class="preview">🎯<b>Goal Tracker</b><small>Keep moving</small></div></div></div></header>
 
-<header class="hero">
-  <div>
-    <span class="badge">Built for students everywhere 🌍</span>
-    <h1>Make studying a little easier.</h1>
-    <p>Free tools and resources designed to help students study, plan and stay organized.</p>
-    <div class="actions">
-      <a class="btn primary" href="#tools">Explore tools</a>
-      <a class="btn secondary" href="#resources">Study resources</a>
-    </div>
-  </div>
-  <div class="hero-card">
-    <div class="mini-head"><strong>Study dashboard</strong><span class="dot"></span></div>
-    <div class="tool-preview">
-      <div class="preview">🧮<b>Grade Calculator</b><small>Check your result</small></div>
-      <div class="preview">⏱️<b>Study Timer</b><small>Focus for a session</small></div>
-      <div class="preview">📅<b>Exam Countdown</b><small>Track your deadline</small></div>
-      <div class="preview">📊<b>Percentage</b><small>Calculate instantly</small></div>
-    </div>
-  </div>
-</header>
+<section id="tools"><div class="section-title"><h2>Study tools</h2><p>Useful little tools, right in your browser.</p></div><div class="grid">
+<a class="card tool" href="#calculator"><div class="icon">🧮</div><h3>Grade Calculator</h3><p>Calculate your average from marks.</p></a><a class="card tool" href="#calculator"><div class="icon">📊</div><h3>Percentage Calculator</h3><p>Find percentages quickly.</p></a><a class="card tool" href="#timer"><div class="icon">⏱️</div><h3>Study Timer</h3><p>Use focused study sessions.</p></a><a class="card tool" href="#countdown"><div class="icon">📅</div><h3>Exam Countdown</h3><p>See how long until an exam.</p></a>
+<a class="card tool" href="#hours"><div class="icon">⏰</div><h3>Study Hours</h3><p>Split your available time into sessions.</p></a><a class="card tool" href="#wordcounter"><div class="icon">📝</div><h3>Word Counter</h3><p>Count words and characters instantly.</p></a><a class="card tool" href="#planner"><div class="icon">📅</div><h3>Study Planner</h3><p>Create a simple plan for your subjects.</p></a><a class="card tool" href="#goals"><div class="icon">🎯</div><h3>Goal Tracker</h3><p>Set a goal and track your progress.</p></a>
+</div></section>
 
-<section id="tools">
-  <div class="section-title">
-    <h2>Study tools</h2>
-    <p>Useful little tools, right in your browser.</p>
-  </div>
-  <div class="grid">
-    <a class="card tool" href="#calculator"><div class="icon">🧮</div><h3>Grade Calculator</h3><p>Calculate your average from marks.</p></a>
-    <a class="card tool" href="#calculator"><div class="icon">📊</div><h3>Percentage Calculator</h3><p>Find percentages quickly.</p></a>
-    <a class="card tool" href="#timer"><div class="icon">⏱️</div><h3>Study Timer</h3><p>Use focused study sessions.</p></a>
-    <a class="card tool" href="#countdown"><div class="icon">📅</div><h3>Exam Countdown</h3><p>See how long until an exam.</p></a>
-  </div>
-</section>
+<section id="calculator"><div class="section-title"><h2>Calculators</h2><p>No calculator app required.</p></div><div class="calculator"><div class="panel"><h3>Grade average</h3><label for="marks">Marks, separated by commas</label><input id="marks" placeholder="e.g. 72, 65, 81, 90"><button class="btn primary" onclick="calcAverage()">Calculate</button><div id="avgResult" class="result">Your average will appear here.</div></div><div class="panel"><h3>Percentage</h3><label for="part">Your score</label><input id="part" type="number" placeholder="e.g. 42"><label for="whole">Total possible</label><input id="whole" type="number" placeholder="e.g. 60"><button class="btn primary" onclick="calcPercent()">Calculate</button><div id="percentResult" class="result">Your percentage will appear here.</div></div></div></section>
 
-<section id="calculator">
-  <div class="section-title"><h2>Calculators</h2><p>No calculator app required.</p></div>
-  <div class="calculator">
-    <div class="panel">
-      <h3>Grade average</h3>
-      <label for="marks">Marks, separated by commas</label>
-      <input id="marks" placeholder="e.g. 72, 65, 81, 90">
-      <button class="btn primary" onclick="calcAverage()">Calculate</button>
-      <div id="avgResult" class="result">Your average will appear here.</div>
-    </div>
-    <div class="panel">
-      <h3>Percentage</h3>
-      <label for="part">Your score</label>
-      <input id="part" type="number" placeholder="e.g. 42">
-      <label for="whole">Total possible</label>
-      <input id="whole" type="number" placeholder="e.g. 60">
-      <button class="btn primary" onclick="calcPercent()">Calculate</button>
-      <div id="percentResult" class="result">Your percentage will appear here.</div>
-    </div>
-  </div>
-</section>
+<section id="timer"><div class="section-title"><h2>Study timer</h2><p>A simple focus session with a break.</p></div><div class="panel timer"><select id="timerPreset" onchange="setTimerPreset()"><option value="25">25 min focus</option><option value="50">50 min focus</option><option value="5">5 min break</option><option value="10">10 min break</option></select><div id="time" class="time">25:00</div><div class="actions"><button class="btn primary" onclick="startTimer()">Start</button><button class="btn secondary" onclick="pauseTimer()">Pause</button><button class="btn secondary" onclick="resetTimer()">Reset</button></div><div id="timerStatus" class="muted small">Ready when you are.</div></div></section>
 
-<section id="timer">
-  <div class="section-title"><h2>Study timer</h2><p>A simple 25-minute focus session.</p></div>
-  <div class="panel timer">
-    <div id="time" class="time">25:00</div>
-    <div class="actions">
-      <button class="btn primary" onclick="startTimer()">Start</button>
-      <button class="btn secondary" onclick="pauseTimer()">Pause</button>
-      <button class="btn secondary" onclick="resetTimer()">Reset</button>
-    </div>
-  </div>
-</section>
+<section id="countdown"><div class="section-title"><h2>Exam countdown</h2><p>Choose a date and we'll count the days for you.</p></div><div class="panel"><label for="examDate">Exam date</label><input id="examDate" type="date"><button class="btn primary" onclick="countdown()">Check countdown</button><div id="countResult" class="result">Choose a date to begin.</div></div></section>
 
-<section id="countdown">
-  <div class="section-title"><h2>Exam countdown</h2><p>Choose a date and we'll count the days for you.</p></div>
-  <div class="panel">
-    <label for="examDate">Exam date</label>
-    <input id="examDate" type="date">
-    <button class="btn primary" onclick="countdown()">Check countdown</button>
-    <div id="countResult" class="result">Choose a date to begin.</div>
-  </div>
-</section>
+<section id="hours"><div class="section-title"><h2>Study hours calculator</h2><p>Turn your available time into manageable sessions.</p></div><div class="panel"><div class="two-col"><div><label for="availableHours">Hours available</label><input id="availableHours" type="number" min="0" step="0.25" placeholder="e.g. 4"><label for="sessionLength">Study minutes per session</label><input id="sessionLength" type="number" min="5" placeholder="e.g. 50"><label for="breakLength">Break minutes between sessions</label><input id="breakLength" type="number" min="0" value="10"></div><div><button class="btn primary" onclick="calcStudyHours()">Plan my time</button><div id="hoursResult" class="result">Your session plan will appear here.</div></div></div></div></section>
 
-<section id="resources">
-  <div class="section-title"><h2>Study resources</h2><p>We're building this section next.</p></div>
-  <div class="grid">
-    <div class="card"><div class="icon">📐</div><h3>Mathematics</h3><p>Revision guides and practice resources.</p></div>
-    <div class="card"><div class="icon">🧬</div><h3>Biology</h3><p>Simple explanations and revision help.</p></div>
-    <div class="card"><div class="icon">⚗️</div><h3>Chemistry</h3><p>Key concepts and practice material.</p></div>
-    <div class="card"><div class="icon">📖</div><h3>Study Skills</h3><p>Tips for planning and revision.</p></div>
-  </div>
-</section>
+<section id="wordcounter"><div class="section-title"><h2>Word counter</h2><p>Useful for essays, assignments and applications.</p></div><div class="panel"><label for="wordText">Paste or type your text</label><textarea id="wordText" oninput="countWords()" placeholder="Start typing here..."></textarea><div class="three-col"><div class="card"><div class="stat" id="wordCount">0</div><div class="muted">Words</div></div><div class="card"><div class="stat" id="charCount">0</div><div class="muted">Characters</div></div><div class="card"><div class="stat" id="readTime">0 min</div><div class="muted">Reading time</div></div></div></div></section>
 
-<section id="about">
-  <div class="section-title"><h2>About StudySpark</h2><p>Small tools. Smarter studying.</p></div>
-  <div class="panel" style="max-width:760px;margin:auto;text-align:center">
-    <p>StudySpark is a student-first project designed to make everyday studying simpler. We start with free tools and useful resources, then grow based on what students actually need.</p>
-  </div>
-</section>
+<section id="planner"><div class="section-title"><h2>Study planner</h2><p>Create a simple plan and keep it saved on this device.</p></div><div class="two-col"><div class="panel"><label for="planSubjects">Subjects</label><input id="planSubjects" placeholder="Maths, Biology, Chemistry, English"><label for="planDays">Days available</label><input id="planDays" type="number" min="1" placeholder="e.g. 14"><label for="planHours">Study hours per day</label><input id="planHours" type="number" min="0.5" step="0.5" placeholder="e.g. 3"><button class="btn primary" onclick="makePlan()">Create study plan</button><div id="planResult" class="result">Your plan will appear here.</div></div><div class="panel"><h3>Your saved plan</h3><div id="savedPlan" class="empty">No plan saved yet.</div><button class="btn secondary" onclick="clearPlan()">Clear saved plan</button></div></div></section>
 
+<section id="goals"><div class="section-title"><h2>Study goal tracker</h2><p>Pick one goal and watch your progress grow.</p></div><div class="panel"><label for="goalName">Goal</label><input id="goalName" placeholder="e.g. Finish Biology revision"><div class="goal-row"><input id="goalProgress" type="range" min="0" max="100" value="0" oninput="updateGoal()"><strong id="goalPercent">0%</strong></div><div class="progress"><span id="progressBar"></span></div><p id="goalText" class="muted">Set your goal above.</p><div class="actions"><button class="btn primary" onclick="saveGoal()">Save goal</button><button class="btn secondary" onclick="resetGoal()">Reset</button></div></div></section>
+
+<section id="resources"><div class="section-title"><h2>Study resources</h2><p>Start with a few simple subject hubs—we can expand these later.</p></div><div class="grid"><div class="card resource"><div class="icon">📐</div><h3>Mathematics</h3><p>Revision guides, formulas and practice resources.</p></div><div class="card resource"><div class="icon">🧬</div><h3>Biology</h3><p>Simple explanations, diagrams and revision help.</p></div><div class="card resource"><div class="icon">⚗️</div><h3>Chemistry</h3><p>Key concepts, equations and practice material.</p></div><div class="card resource"><div class="icon">⚛️</div><h3>Physics</h3><p>Formula help and topic-by-topic revision.</p></div><div class="card resource"><div class="icon">📖</div><h3>English</h3><p>Writing, vocabulary and study support.</p></div><div class="card resource"><div class="icon">🧠</div><h3>Study Skills</h3><p>Planning, focus, revision and exam tips.</p></div></div></section>
+
+<section id="about"><div class="section-title"><h2>About StudySpark</h2><p>Small tools. Smarter studying.</p></div><div class="panel" style="max-width:760px;margin:auto;text-align:center"><p>StudySpark is a student-first project designed to make everyday studying simpler. We start with free tools and useful resources, then grow based on what students actually need.</p></div></section>
 <footer>© 2026 StudySpark · Small tools. Smarter studying.</footer>
-
 <script>
-function calcAverage(){
-  const values=document.getElementById('marks').value.split(',').map(x=>Number(x.trim())).filter(x=>Number.isFinite(x));
-  const out=document.getElementById('avgResult');
-  if(!values.length){out.textContent='Please enter at least one mark.';return}
-  const avg=values.reduce((a,b)=>a+b,0)/values.length;
-  out.textContent=`Average: ${avg.toFixed(2)}%`;
-}
-function calcPercent(){
-  const part=Number(document.getElementById('part').value), whole=Number(document.getElementById('whole').value);
-  const out=document.getElementById('percentResult');
-  if(!Number.isFinite(part)||!Number.isFinite(whole)||whole<=0){out.textContent='Enter valid numbers.';return}
-  out.textContent=`Percentage: ${(part/whole*100).toFixed(2)}%`;
-}
-let seconds=1500, interval=null;
-function renderTimer(){document.getElementById('time').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`}
-function startTimer(){
-  if(interval)return;
-  interval=setInterval(()=>{if(seconds>0){seconds--;renderTimer()}else{clearInterval(interval);interval=null;alert('Study session complete! 🎉')}},1000)
-}
-function pauseTimer(){clearInterval(interval);interval=null}
-function resetTimer(){pauseTimer();seconds=1500;renderTimer()}
-function countdown(){
-  const value=document.getElementById('examDate').value, out=document.getElementById('countResult');
-  if(!value){out.textContent='Choose an exam date.';return}
-  const today=new Date(); today.setHours(0,0,0,0);
-  const exam=new Date(value+'T00:00:00');
-  const days=Math.ceil((exam-today)/86400000);
-  out.textContent=days>0?`${days} day${days===1?'':'s'} to go! 📚`:days===0?'Your exam is today! 💪':'That date has already passed.';
-}
-renderTimer();
+function calcAverage(){const v=document.getElementById('marks').value.split(',').map(x=>Number(x.trim())).filter(Number.isFinite),o=document.getElementById('avgResult');if(!v.length){o.textContent='Please enter at least one mark.';return}o.textContent=`Average: ${(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2)}%`}
+function calcPercent(){const p=Number(document.getElementById('part').value),w=Number(document.getElementById('whole').value),o=document.getElementById('percentResult');if(!Number.isFinite(p)||!Number.isFinite(w)||w<=0){o.textContent='Enter valid numbers.';return}o.textContent=`Percentage: ${(p/w*100).toFixed(2)}%`}
+let seconds=1500,interval=null;function renderTimer(){document.getElementById('time').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`}function setTimerPreset(){pauseTimer();seconds=Number(document.getElementById('timerPreset').value)*60;renderTimer();document.getElementById('timerStatus').textContent='Preset selected.'}function startTimer(){if(interval)return;document.getElementById('timerStatus').textContent='Focus mode is running. 🔥';interval=setInterval(()=>{if(seconds>0){seconds--;renderTimer()}else{pauseTimer();document.getElementById('timerStatus').textContent='Session complete! Take a short break. 🎉';alert('Study session complete! 🎉')}},1000)}function pauseTimer(){clearInterval(interval);interval=null}function resetTimer(){pauseTimer();seconds=Number(document.getElementById('timerPreset').value)*60;renderTimer();document.getElementById('timerStatus').textContent='Ready when you are.'}
+function countdown(){const v=document.getElementById('examDate').value,o=document.getElementById('countResult');if(!v){o.textContent='Choose an exam date.';return}const today=new Date();today.setHours(0,0,0,0);const exam=new Date(v+'T00:00:00'),days=Math.ceil((exam-today)/86400000);o.textContent=days>0?`${days} day${days===1?'':'s'} to go! 📚`:days===0?'Your exam is today! 💪':'That date has already passed.'}
+function calcStudyHours(){const h=Number(document.getElementById('availableHours').value),s=Number(document.getElementById('sessionLength').value),b=Number(document.getElementById('breakLength').value),o=document.getElementById('hoursResult');if(h<=0||s<=0||b<0){o.textContent='Enter valid time values.';return}const total=Math.round(h*60),sessions=Math.max(1,Math.floor((total+b)/(s+b))),study=Math.min(sessions*s,total),breaks=Math.max(0,sessions-1),used=study+breaks*b,left=Math.max(0,total-used);o.innerHTML=`About <strong>${sessions}</strong> sessions of ${s} minutes.<br>${breaks} break${breaks===1?'':'s'} of ${b} minutes.<br>Study time: ${study} min${left?`<br>${left} min left over`:''}.`}
+function countWords(){const t=document.getElementById('wordText').value,words=t.trim()?t.trim().split(/\s+/).length:0;document.getElementById('wordCount').textContent=words;document.getElementById('charCount').textContent=t.length;document.getElementById('readTime').textContent=`${Math.max(0,Math.ceil(words/200))} min`}
+function makePlan(){const subs=document.getElementById('planSubjects').value.split(',').map(s=>s.trim()).filter(Boolean),days=Number(document.getElementById('planDays').value),hours=Number(document.getElementById('planHours').value),out=document.getElementById('planResult');if(!subs.length||days<1||hours<=0){out.textContent='Enter subjects, days and study hours.';return}const per=hours/subs.length;let html=`<strong>${days}-day plan</strong><br>${subs.map(s=>`📚 ${s}: about ${per.toFixed(1)} h/day`).join('<br>')}<br><span class="small">Rotate subjects each day and use the final day for review.</span>`;out.innerHTML=html;localStorage.setItem('studysparkPlan',html);document.getElementById('savedPlan').innerHTML=html}
+function clearPlan(){localStorage.removeItem('studysparkPlan');document.getElementById('savedPlan').innerHTML='<div class="empty">No plan saved yet.</div>'}
+function updateGoal(){const p=Number(document.getElementById('goalProgress').value);document.getElementById('goalPercent').textContent=p+'%';document.getElementById('progressBar').style.width=p+'%';const n=document.getElementById('goalName').value.trim();document.getElementById('goalText').textContent=n?(p>=100?`🎉 ${n} — completed!`:p?`${n} — ${p}% complete.`:`${n} — ready to start.`):'Set your goal above.'}
+function saveGoal(){const n=document.getElementById('goalName').value.trim();if(!n){document.getElementById('goalText').textContent='Enter a goal first.';return}localStorage.setItem('studysparkGoal',JSON.stringify({name:n,progress:Number(document.getElementById('goalProgress').value)}));updateGoal()}
+function resetGoal(){localStorage.removeItem('studysparkGoal');document.getElementById('goalName').value='';document.getElementById('goalProgress').value=0;updateGoal()}
+renderTimer();countWords();const savedPlan=localStorage.getItem('studysparkPlan');if(savedPlan)document.getElementById('savedPlan').innerHTML=savedPlan;const savedGoal=JSON.parse(localStorage.getItem('studysparkGoal')||'null');if(savedGoal){document.getElementById('goalName').value=savedGoal.name;document.getElementById('goalProgress').value=savedGoal.progress;updateGoal()}
 </script>
-</body>
-</html>
+</body></html>
