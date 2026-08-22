@@ -58,4 +58,107 @@ function saveGoal(){const n=document.getElementById('goalName').value.trim();if(
 function resetGoal(){localStorage.removeItem('studysparkGoal');document.getElementById('goalName').value='';document.getElementById('goalProgress').value=0;updateGoal()}
 renderTimer();countWords();const savedPlan=localStorage.getItem('studysparkPlan');if(savedPlan)document.getElementById('savedPlan').innerHTML=savedPlan;const savedGoal=JSON.parse(localStorage.getItem('studysparkGoal')||'null');if(savedGoal){document.getElementById('goalName').value=savedGoal.name;document.getElementById('goalProgress').value=savedGoal.progress;updateGoal()}
 </script>
+
+<!-- StudySpark Phase 3 -->
+<section id="phase3" class="phase3-section" style="padding:28px 16px;max-width:1100px;margin:0 auto;">
+  <div style="text-align:center;margin-bottom:22px;">
+    <span style="display:inline-block;padding:6px 12px;border-radius:999px;background:#eef2ff;font-weight:700;font-size:.82rem;">PHASE 3</span>
+    <h2 style="margin:10px 0 6px;">Your Study Dashboard</h2>
+    <p style="margin:0;opacity:.75;">Track goals, revise with flashcards, test yourself and see your progress.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+    <article style="border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(20,30,60,.08);background:var(--card,#fff);">
+      <h3>🎯 Daily Goal</h3>
+      <input id="p3Goal" type="text" placeholder="e.g. Revise Biology" style="width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1px solid #ddd;">
+      <button id="p3SaveGoal" style="margin-top:10px;padding:10px 14px;border:0;border-radius:10px;cursor:pointer;">Save goal</button>
+      <p id="p3GoalDisplay" style="font-weight:700;"></p>
+    </article>
+
+    <article style="border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(20,30,60,.08);background:var(--card,#fff);">
+      <h3>🧠 Flashcards</h3>
+      <input id="p3Front" type="text" placeholder="Question" style="width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1px solid #ddd;">
+      <input id="p3Back" type="text" placeholder="Answer" style="width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1px solid #ddd;margin-top:8px;">
+      <button id="p3AddCard" style="margin-top:10px;padding:10px 14px;border:0;border-radius:10px;cursor:pointer;">Add card</button>
+      <p id="p3CardCount"></p>
+      <button id="p3ReviewCard" style="padding:10px 14px;border:0;border-radius:10px;cursor:pointer;">Review next</button>
+      <div id="p3CardReview" style="margin-top:10px;font-weight:700;"></div>
+    </article>
+
+    <article style="border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(20,30,60,.08);background:var(--card,#fff);">
+      <h3>📈 Progress</h3>
+      <p>Sessions completed: <strong id="p3Sessions">0</strong></p>
+      <button id="p3Session" style="padding:10px 14px;border:0;border-radius:10px;cursor:pointer;">Complete a session</button>
+      <div style="height:12px;background:#e9edf5;border-radius:99px;overflow:hidden;margin-top:12px;">
+        <div id="p3ProgressBar" style="height:100%;width:0%;"></div>
+      </div>
+      <p id="p3ProgressText">0% of today's 5-session target</p>
+    </article>
+
+    <article style="border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(20,30,60,.08);background:var(--card,#fff);">
+      <h3>🌙 Appearance</h3>
+      <p>Switch between a light and dark study environment.</p>
+      <button id="p3DarkMode" style="padding:10px 14px;border:0;border-radius:10px;cursor:pointer;">Toggle dark mode</button>
+    </article>
+  </div>
+</section>
+
+<script>
+(function(){
+  const KEY="studyspark_phase3";
+  let state={goal:"",cards:[],index:0,sessions:0,dark:false};
+  try{ state=Object.assign(state,JSON.parse(localStorage.getItem(KEY)||"{}")); }catch(e){}
+  const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
+  const $=id=>document.getElementById(id);
+
+  function render(){
+    $("p3GoalDisplay").textContent=state.goal?("Today's goal: "+state.goal):"No goal saved yet.";
+    $("p3CardCount").textContent=state.cards.length+" card"+(state.cards.length===1?"":"s")+" saved";
+    $("p3Sessions").textContent=state.sessions;
+    const pct=Math.min(100,Math.round(state.sessions/5*100));
+    $("p3ProgressBar").style.width=pct+"%";
+    $("p3ProgressText").textContent=pct+"% of today's 5-session target";
+    document.body.style.background=state.dark?"#111827":"";
+    document.body.style.color=state.dark?"#f3f4f6":"";
+    document.querySelectorAll(".phase3-section article").forEach(el=>{
+      el.style.background=state.dark?"#1f2937":"var(--card,#fff)";
+      el.style.color=state.dark?"#f3f4f6":"";
+    });
+  }
+
+  $("p3SaveGoal").onclick=()=>{
+    state.goal=$("p3Goal").value.trim();
+    save(); render();
+  };
+
+  $("p3AddCard").onclick=()=>{
+    const front=$("p3Front").value.trim(), back=$("p3Back").value.trim();
+    if(!front||!back){alert("Please enter both a question and an answer.");return;}
+    state.cards.push({front,back});
+    $("p3Front").value=""; $("p3Back").value="";
+    save(); render();
+  };
+
+  $("p3ReviewCard").onclick=()=>{
+    if(!state.cards.length){$("p3CardReview").textContent="Add a flashcard first.";return;}
+    const c=state.cards[state.index%state.cards.length];
+    $("p3CardReview").textContent="Question: "+c.front+"  |  Answer: "+c.back;
+    state.index=(state.index+1)%state.cards.length;
+    save();
+  };
+
+  $("p3Session").onclick=()=>{
+    state.sessions++;
+    save(); render();
+  };
+
+  $("p3DarkMode").onclick=()=>{
+    state.dark=!state.dark;
+    save(); render();
+  };
+
+  render();
+})();
+</script>
+
 </body></html>
