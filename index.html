@@ -257,6 +257,73 @@ const bank=[
 {s:"chemistry",t:"matter",d:"easy",q:"Which state of matter has a fixed volume but no fixed shape?",a:["Solid","Liquid","Gas","Plasma"],c:1},{s:"chemistry",t:"atoms",d:"easy",q:"What is the negatively charged subatomic particle?",a:["Proton","Neutron","Electron","Nucleus"],c:2},{s:"chemistry",t:"atoms",d:"medium",q:"The atomic number tells you the number of what in a neutral atom?",a:["Neutrons","Protons","Shells","Molecules"],c:1},{s:"chemistry",t:"atoms",d:"hard",q:"Why is an atom electrically neutral?",a:["It has no particles","Protons and electrons have equal opposite charges","Neutrons are charged","Electrons have no charge"],c:1},
 {s:"physics",t:"motion",d:"easy",q:"What is the SI unit of speed?",a:["Newton","Joule","Metre per second","Watt"],c:2},{s:"physics",t:"motion",d:"medium",q:"A car travels 100 m in 5 s. What is its average speed?",a:["5 m/s","20 m/s","50 m/s","500 m/s"],c:1},{s:"physics",t:"motion",d:"hard",q:"If an object travels at 12 m/s for 8 seconds, how far does it travel?",a:["20 m","48 m","96 m","120 m"],c:2},
 {s:"english",t:"grammar",d:"easy",q:"Which word is a noun?",a:["Quickly","Beautiful","Teacher","Run"],c:2},{s:"english",t:"grammar",d:"medium",q:"Which sentence is in the past tense?",a:["She walks home.","She is walking home.","She walked home.","She will walk home."],c:2},{s:"english",t:"grammar",d:"hard",q:"Which sentence uses the passive voice?",a:["The chef cooked the meal.","The meal was cooked by the chef.","The chef is cooking.","The chef will cook."],c:1}];
-const topics={biology:[["cells","Cells"],["human-biology","Human Biology"]],math:[["percentages","Percentages"],["algebra","Algebra"]],chemistry:[["atoms","Atoms"],["matter","Matter"]],physics:[["motion","Motion"]],english:[["grammar","Grammar"]]};const $=id=>document.getElementById(id);let current=[],pos=0,score=0,answered=false;
-function updateTopics(){$("s5Topic").innerHTML=(topics[$("s5Subject").value]||[]).map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join("")}function filtered(){const s=$("s5Subject").value,t=$("s5Topic").value,d=$("s5Difficulty").value;return bank.filter(x=>x.s===s&&x.t===t&&(d==="all"||x.d===d))}function start(){let pool=filtered();if(!pool.length){alert("There are no questions for that selection yet. Try Mixed difficulty.");return}current=pool.sort(()=>Math.random()-.5).slice(0,Math.min(Number($("s5Count").value),pool.length));pos=0;score=0;$("s5Results").style.display="none";$("s5Quiz").style.display="block";show()}function show(){const q=current[pos];answered=false;$("s5Meta").textContent="Question "+(pos+1)+" of "+current.length+" • "+q.d+" difficulty";$("s5Bar").style.width=((pos/current.length)*100)+"%";$("s5Question").textContent=q.q;$("s5Choices").innerHTML=q.a.map((x,i)=>'<button class="s5-choice" data-i="'+i+'">'+x+'</button>').join("");$("s5Next").style.display="none";$("s5Choices").querySelectorAll("button").forEach(b=>b.onclick=()=>{if(answered)return;answered=true;const ok=Number(b.dataset.i)===q.c;if(ok){score++;b.textContent="✓ "+q.a[q.c]}else b.textContent="✗ "+q.a[Number(b.dataset.i)]+" — correct: "+q.a[q.c];$("s5Choices").querySelectorAll("button").forEach(x=>x.disabled=true);$("s5Next").style.display="block"})}function next(){pos++;if(pos>=current.length){$("s5Quiz").style.display="none";$("s5Results").style.display="block";const pct=Math.round(score/current.length*100);$("s5Score").innerHTML="<h3>"+score+"/"+current.length+" — "+pct+"%</h3>";$("s5Breakdown").textContent=pct>=80?"Excellent work! 🎉":pct>=50?"Good job — keep practising! 💪":"Keep going — review the topics and try again! 🌱"}else show()}$("s5Subject").onchange=updateTopics;$("s5Start").onclick=start;$("s5Next").onclick=next;$("s5Retry").onclick=start;updateTopics();})();</script>
+const topics={biology:[["cells","Cells"],["human-biology","Human Biology"]],math:[["percentages","Percentages"],["algebra","Algebra"]],chemistry:[["atoms","Atoms"],["matter","Matter"]],physics:[["motion","Motion"]],english:[["grammar","Grammar"]]};const $=id=>document.getElementById(id);let current=[],pos=0,score=0,answered=false;window.__studySparkV6Mistakes=[];
+function updateTopics(){$("s5Topic").innerHTML=(topics[$("s5Subject").value]||[]).map(x=>'<option value="'+x[0]+'">'+x[1]+'</option>').join("")}function filtered(){const s=$("s5Subject").value,t=$("s5Topic").value,d=$("s5Difficulty").value;return bank.filter(x=>x.s===s&&x.t===t&&(d==="all"||x.d===d))}function start(){let pool=filtered();if(!pool.length){alert("There are no questions for that selection yet. Try Mixed difficulty.");return}current=pool.sort(()=>Math.random()-.5).slice(0,Math.min(Number($("s5Count").value),pool.length));pos=0;score=0;$("s5Results").style.display="none";$("s5Quiz").style.display="block";show()}function show(){const q=current[pos];answered=false;$("s5Meta").textContent="Question "+(pos+1)+" of "+current.length+" • "+q.d+" difficulty";$("s5Bar").style.width=((pos/current.length)*100)+"%";$("s5Question").textContent=q.q;$("s5Choices").innerHTML=q.a.map((x,i)=>'<button class="s5-choice" data-i="'+i+'">'+x+'</button>').join("");$("s5Next").style.display="none";$("s5Choices").querySelectorAll("button").forEach(b=>b.onclick=()=>{if(answered)return;answered=true;const chosen=Number(b.dataset.i),ok=chosen===q.c;if(ok){score++;b.textContent="✓ "+q.a[q.c]}else{b.textContent="✗ "+q.a[chosen]+" — correct: "+q.a[q.c];window.__studySparkV6Mistakes.push({q:q.q,correct:q.a[q.c],chosen:q.a[chosen],subject:q.s,topic:q.t,difficulty:q.d})}$("s5Choices").querySelectorAll("button").forEach(x=>x.disabled=true);$("s5Next").style.display="block"})}function next(){pos++;if(pos>=current.length){$("s5Quiz").style.display="none";$("s5Results").style.display="block";const pct=Math.round(score/current.length*100);$("s5Score").innerHTML="<h3>"+score+"/"+current.length+" — "+pct+"%</h3>";$("s5Breakdown").textContent=pct>=80?"Excellent work! 🎉":pct>=50?"Good job — keep practising! 💪":"Keep going — review the topics and try again! 🌱"}else show()}$("s5Subject").onchange=updateTopics;$("s5Start").onclick=start;$("s5Next").onclick=next;$("s5Retry").onclick=start;updateTopics();})();</script>
+
+<style>
+.s6-review{margin-top:14px;padding:18px;border-radius:18px;border:1px solid #e2e6ee;background:rgba(255,255,255,.7)}
+.s6-review h4{margin:0 0 8px}
+.s6-tag{display:inline-block;padding:4px 9px;border-radius:99px;font-size:.78rem;font-weight:700;margin-bottom:8px}
+.s6-box{padding:12px;border-radius:12px;background:rgba(245,247,252,.9);margin:9px 0}
+.s6-btn{border:0;border-radius:10px;padding:10px 13px;cursor:pointer;font-weight:700;margin-top:8px}
+</style>
+<script>
+(function(){
+  const explanations = {
+    "Which structure controls the activities of a cell?":{why:"The nucleus contains genetic material and controls many of the cell's activities.",trap:"Do not confuse the nucleus with the cytoplasm. The cytoplasm is where many chemical reactions happen.",tip:"When a question says 'controls the activities of the cell', think: nucleus."},
+    "Which structure is the site of aerobic respiration?":{why:"Aerobic respiration takes place mainly in mitochondria, where energy is released from food.",trap:"The nucleus controls cell activities, but respiration is linked to mitochondria.",tip:"Mitochondria are associated with aerobic respiration and energy release."},
+    "What is the movement of water molecules through a partially permeable membrane called?":{why:"Osmosis is the net movement of water molecules through a partially permeable membrane from higher water potential to lower water potential.",trap:"Diffusion can involve many particles, but osmosis specifically refers to water.",tip:"Water + partially permeable membrane usually signals osmosis."},
+    "Why can a plant cell become turgid in dilute solution?":{why:"Water enters the plant cell by osmosis. The cell wall resists expansion, helping the cell become turgid.",trap:"The cell does not become turgid because water leaves it.",tip:"In a dilute solution, water tends to enter the cell by osmosis."},
+    "Which organ pumps blood around the body?":{why:"The heart contracts to pump blood through the circulatory system.",trap:"The lungs oxygenate blood, but they do not pump it around the body.",tip:"Pump = heart; gas exchange = lungs."},
+    "Which blood vessel carries blood away from the heart?":{why:"Arteries carry blood away from the heart; veins carry blood towards it.",trap:"Do not identify arteries and veins by oxygen level alone; pulmonary vessels are an exception.",tip:"A memory aid: Arteries carry blood Away."},
+    "What is 25% of 80?":{why:"25% is one quarter. One quarter of 80 is 20.",trap:"Do not confuse 25% with the number 25.",tip:"To find 25%, divide by 4."},
+    "If x + 7 = 12, what is x?":{why:"Subtract 7 from both sides: x = 12 − 7 = 5.",trap:"Do not add 7 again; use the inverse operation.",tip:"Undo addition with subtraction to isolate the unknown."},
+    "Which state of matter has a fixed volume but no fixed shape?":{why:"A liquid keeps a fixed volume but takes the shape of its container.",trap:"A solid has fixed shape and volume; a gas has neither.",tip:"Liquid = fixed volume, changing shape."},
+    "What is the negatively charged subatomic particle?":{why:"Electrons have a negative charge. Protons are positive and neutrons have no charge.",trap:"The nucleus contains protons and neutrons, not electrons.",tip:"Electron = negative."},
+    "What is the SI unit of speed?":{why:"Speed is distance divided by time, so its SI unit is metres per second (m/s).",trap:"Newton is force, joule is energy and watt is power.",tip:"Speed = distance ÷ time."},
+    "Which word is a noun?":{why:"A noun names a person, place, thing or idea. 'Teacher' names a person.",trap:"Quickly is an adverb and beautiful is an adjective.",tip:"Ask whether the word names a person, place, thing or idea."}
+  };
+  function init(){
+    const results=document.getElementById("s5Results");
+    if(!results || results.dataset.s6Ready==="1") return;
+    results.dataset.s6Ready="1";
+    const review=document.createElement("div");
+    review.className="s6-review";
+    review.innerHTML='<h4>🧠 Smart Review</h4><p>Finish a quiz, then review your mistakes with explanations and exam tips.</p><button type="button" class="s6-btn" id="s6ReviewButton">🧠 Review my mistakes</button><div id="s6ReviewContent"></div>';
+    results.appendChild(review);
+    document.getElementById("s6ReviewButton").addEventListener("click",()=>{
+      const content=document.getElementById("s6ReviewContent");
+      const mistakes=window.__studySparkV6Mistakes||[];
+      content.replaceChildren();
+      if(!mistakes.length){
+        const box=document.createElement("div");box.className="s6-box";box.textContent="🎉 No mistakes to review in this quiz. Great work!";content.appendChild(box);return;
+      }
+      const intro=document.createElement("p");intro.textContent="Use each explanation to understand the concept and avoid the same mistake in an exam.";content.appendChild(intro);
+      mistakes.forEach(item=>{
+        const e=explanations[item.q]||{why:"The correct answer is shown below. Review the topic and compare it with the option you selected.",trap:"Read the whole question and every option before choosing.",tip:"Identify key words in the question and explain why the correct option fits."};
+        const box=document.createElement("div");box.className="s6-box";
+        const title=document.createElement("strong");title.textContent="❌ "+item.q;box.appendChild(title);
+        const details=document.createElement("p");
+        details.appendChild(document.createElement("b")).textContent="Your answer: ";
+        details.appendChild(document.createTextNode(item.chosen||"Not recorded"));
+        details.appendChild(document.createElement("br"));
+        details.appendChild(document.createElement("b")).textContent="Correct answer: ";
+        details.appendChild(document.createTextNode(item.correct||"Answer unavailable"));
+        details.appendChild(document.createElement("br"));details.appendChild(document.createElement("br"));
+        details.appendChild(document.createElement("b")).textContent="🔍 Why: ";
+        details.appendChild(document.createTextNode(e.why));
+        details.appendChild(document.createElement("br"));details.appendChild(document.createElement("br"));
+        details.appendChild(document.createElement("b")).textContent="⚠️ Exam trap: ";
+        details.appendChild(document.createTextNode(e.trap));
+        details.appendChild(document.createElement("br"));details.appendChild(document.createElement("br"));
+        details.appendChild(document.createElement("b")).textContent="💡 Exam tip: ";
+        details.appendChild(document.createTextNode(e.tip));
+        box.appendChild(details);content.appendChild(box);
+      });
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+
 </body></html>
